@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriConnect - Role Selection</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect System</strong></div>
+    <div>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a href="officer.html">Agriculture Officer</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>AgriConnect Service-Oriented Platform</h2>
+      <p>Select a user role below to access its dedicated interface and backend microservice.</p>
+    </div>
+
+    <div class="role-grid">
+      <div class="box">
+        <h3>1. Farmer Portal</h3>
+        <p>Register farmer details, submit supply requests, compare quotations, confirm orders, and post harvested crops.</p>
+        <p><small>Service Port: 5001 (farmer_data.db)</small></p>
+        <a href="farmer.html"><button>Open Farmer UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>2. Supplier Portal</h3>
+        <p>Manage warehouse stock, view farmer supply requests, send price quotations, and update delivery status.</p>
+        <p><small>Service Port: 5002 (supplier_data.db)</small></p>
+        <a href="supplier.html"><button class="btn-blue">Open Supplier UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>3. Agriculture Officer</h3>
+        <p>Verify supply requests and quotations, approve or reject orders, and publish farming recommendations.</p>
+        <p><small>Service Port: 5003 (officer_data.db)</small></p>
+        <a href="officer.html"><button>Open Officer UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>4. Administration</h3>
+        <p>Manage user accounts, check microservice status, and monitor system-wide audit logs.</p>
+        <p><small>Service Port: 5004 (admin_data.db)</small></p>
+        <a href="admin.html"><button class="btn-blue">Open Admin UI</button></a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

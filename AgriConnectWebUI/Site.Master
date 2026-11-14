@@ -1,0 +1,25 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="AgriConnectWebUI.SiteMaster" %>
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>AgriConnect - ASP.NET SOC Web Application</title>
+    <link href="Styles/site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="header-bar">
+            <div><strong>AgriConnect SOC Platform (ASP.NET Web Forms + ASMX Services)</strong></div>
+            <div>
+                <asp:HyperLink ID="lnkHome" runat="server" NavigateUrl="~/Default.aspx" Text="Home" />
+                <asp:HyperLink ID="lnkFarmer" runat="server" NavigateUrl="~/Farmer.aspx" Text="Farmer Portal" />
+                <asp:HyperLink ID="lnkSupplier" runat="server" NavigateUrl="~/Supplier.aspx" Text="Supplier Portal" />
+                <asp:HyperLink ID="lnkOfficer" runat="server" NavigateUrl="~/Officer.aspx" Text="Agriculture Officer" />
+                <asp:HyperLink ID="lnkAdmin" runat="server" NavigateUrl="~/Admin.aspx" Text="Administration" />
+            </div>
+        </div>
+        <div class="main-container">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+    </form>
+</body>
+</html>

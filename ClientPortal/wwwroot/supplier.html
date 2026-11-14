@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Supplier Dashboard - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - Supplier Dashboard</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="farmer.html">Farmer</a>
+      <a class="active" href="supplier.html">Supplier</a>
+      <a href="officer.html">Officer</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col box">
+        <h2>Send Quotation for Farmer Request</h2>
+        <form id="quoteForm">
+          <div class="form-row">
+            <div><label>Select Request</label><select id="qReqSelect"></select></div>
+            <div><label>Supplier Name</label><input id="qSupplier" value="Lanka Agro Supplies" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Contact Phone</label><input id="qPhone" value="0372229010" required /></div>
+            <div><label>Unit Price (Rs)</label><input id="qPrice" type="number" value="6500" required /></div>
+            <div><label>Offered Qty</label><input id="qQty" type="number" value="10" required /></div>
+            <div><label>Delivery Days</label><input id="qDays" type="number" value="2" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Remarks</label><input id="qRemarks" value="Available in stock" /></div>
+          </div>
+          <button type="submit" class="btn-blue">Submit Quotation</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Add Inventory Stock</h2>
+        <form id="stockForm">
+          <div class="form-row">
+            <div><label>Supplier Name</label><input id="sSupplier" value="Lanka Agro Supplies" required /></div>
+            <div><label>Product Name</label><input id="sName" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Category</label><select id="sCat"><option>Fertilizer</option><option>Seeds</option><option>Pesticide</option></select></div>
+            <div><label>Available Qty</label><input id="sQty" type="number" value="100" required /></div>
+            <div><label>Unit</label><input id="sUnit" value="Bags" required /></div>
+            <div><label>Unit Price (Rs)</label><input id="sPrice" type="number" value="6800" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Warehouse</label><input id="sWarehouse" value="Kurunegala" required /></div>
+          </div>
+          <button type="submit" class="btn-blue">Add Stock</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Order Deliveries</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Req ID</th><th>Item</th><th>Qty</th><th>Location</th><th>Status</th><th>Update Status</th></tr></thead>
+        <tbody id="deliveryTable"></tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="col box">
+        <h2>Warehouse Inventory</h2>
+        <table>
+          <thead><tr><th>Product</th><th>Supplier</th><th>Stock</th><th>Unit Price</th><th>Warehouse</th></tr></thead>
+          <tbody id="stockTable"></tbody>
+        </table>
+      </div>
+
+      <div class="col box">
+        <h2>Submitted Quotations</h2>
+        <table>
+          <thead><tr><th>Req ID</th><th>Item</th><th>Supplier</th><th>Total (Rs)</th><th>Status</th></tr></thead>
+          <tbody id="quotesTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    let allRequests = [];
+
+    async function loadSupplier() {
+      const [stock, requests, quotes, deliveries] = await Promise.all([
+        fetch(`${SERVICES.supplier}/inventory`).then(r => r.json()),
+        fetch(`${SERVICES.supplier}/farmer-requests`).then(r => r.json()),
+        fetch(`${SERVICES.supplier}/quotations`).then(r => r.json()),
+        fetch(`${SERVICES.supplier}/deliveries`).then(r => r.json())
+      ]);
+
+      allRequests = requests;
+      document.getElementById("qReqSelect").innerHTML = requests.map(r =>
+        `<option value="${r.id}">Req #${r.id} - ${r.itemName} (${r.quantity} ${r.unit})</option>`
+      ).join("");
+
+      document.getElementById("stockTable").innerHTML = stock.map(s => `
+        <tr><td>${s.productName}</td><td>${s.supplierName}</td><td>${s.availableQty} ${s.unit}</td><td>Rs. ${s.unitPrice}</td><td>${s.warehouse}</td></tr>
+      `).join("");
+
+      document.getElementById("quotesTable").innerHTML = quotes.map(q => `
+        <tr><td>#${q.supplyRequestId}</td><td>${q.itemName}</td><td>${q.supplierName}</td><td>Rs. ${q.totalAmount}</td><td>${getBadge(q.status)}</td></tr>
+      `).join("");
+
+      document.getElementById("deliveryTable").innerHTML = deliveries.length ? deliveries.map(d => `
+        <tr>
+          <td>${d.id}</td>
+          <td>#${d.supplyRequestId}</td>
+          <td>${d.itemName}</td>
+          <td>${d.quantity}</td>
+          <td>${d.deliveryLocation}</td>
+          <td>${getBadge(d.status)}</td>
+          <td>
+            <select onchange="changeDelivery(${d.id}, this.value)">
+              <option ${d.status==="Preparing"?"selected":""}>Preparing</option>
+              <option ${d.status==="Dispatched"?"selected":""}>Dispatched</option>
+              <option ${d.status==="InTransit"?"selected":""}>InTransit</option>
+              <option ${d.status==="Delivered"?"selected":""}>Delivered</option>
+            </select>
+          </td>
+        </tr>
+      `).join("") : `<tr><td colspan="7">No confirmed orders for delivery yet.</td></tr>`;
+    }
+
+    async function changeDelivery(id, status) {
+      await fetch(`${SERVICES.supplier}/deliveries/${id}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+      });
+      loadSupplier();
+    }
+
+    document.getElementById("quoteForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const reqId = parseInt(document.getElementById("qReqSelect").value);
+      const req = allRequests.find(x => x.id === reqId);
+      await fetch(`${SERVICES.supplier}/quotations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          supplyRequestId: reqId,
+          itemName: req ? req.itemName : "Supply Item",
+          supplierName: document.getElementById("qSupplier").value,
+          contactPhone: document.getElementById("qPhone").value,
+          unitPrice: parseFloat(document.getElementById("qPrice").value),
+          offeredQty: parseInt(document.getElementById("qQty").value),
+          deliveryDays: parseInt(document.getElementById("qDays").value),
+          remarks: document.getElementById("qRemarks").value
+        })
+      });
+      alert("Quotation submitted.");
+      loadSupplier();
+    });
+
+    document.getElementById("stockForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.supplier}/inventory`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          supplierName: document.getElementById("sSupplier").value,
+          productName: document.getElementById("sName").value,
+          category: document.getElementById("sCat").value,
+          availableQty: parseInt(document.getElementById("sQty").value),
+          unit: document.getElementById("sUnit").value,
+          unitPrice: parseFloat(document.getElementById("sPrice").value),
+          warehouse: document.getElementById("sWarehouse").value
+        })
+      });
+      e.target.reset();
+      alert("Stock added.");
+      loadSupplier();
+    });
+
+    loadSupplier();
+  </script>
+</body>
+</html>

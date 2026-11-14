@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Administration - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - Administration</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a href="officer.html">Officer</a>
+      <a class="active" href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>Microservices Status & Platform Summary</h2>
+      <div class="row" id="summaryCards"></div>
+    </div>
+
+    <div class="row">
+      <div class="col box">
+        <h2>Add User Account</h2>
+        <form id="userForm">
+          <div class="form-row">
+            <div><label>Full Name</label><input id="uName" required /></div>
+            <div><label>Email</label><input id="uEmail" type="email" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Role</label><select id="uRole"><option>Farmer</option><option>Supplier</option><option>Officer</option><option>Admin</option></select></div>
+            <div><label>District</label><input id="uDist" value="Colombo" required /></div>
+          </div>
+          <button type="submit" class="btn-blue">Create Account</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Platform Users</h2>
+        <table>
+          <thead><tr><th>Name</th><th>Role</th><th>District</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="userTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>System Audit Logs</h2>
+      <table>
+        <thead><tr><th>Time</th><th>Service</th><th>Action</th><th>Details</th></tr></thead>
+        <tbody id="logTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    async function loadAdmin() {
+      const [summary, users, logs] = await Promise.all([
+        fetch(`${SERVICES.admin}/summary`).then(r => r.json()),
+        fetch(`${SERVICES.admin}/users`).then(r => r.json()),
+        fetch(`${SERVICES.admin}/logs`).then(r => r.json())
+      ]);
+
+      document.getElementById("summaryCards").innerHTML = `
+        <div class="col"><strong>Total Users:</strong> ${summary.totalUsers}</div>
+        <div class="col"><strong>Supply Requests:</strong> ${summary.requests}</div>
+        <div class="col"><strong>Quotations:</strong> ${summary.quotes}</div>
+        <div class="col"><strong>Crop Listings:</strong> ${summary.crops}</div>
+        <div class="col"><strong>FarmerService (5001):</strong> ${getBadge(summary.services.farmer)}</div>
+        <div class="col"><strong>SupplierService (5002):</strong> ${getBadge(summary.services.supplier)}</div>
+        <div class="col"><strong>OfficerService (5003):</strong> ${getBadge(summary.services.officer)}</div>
+        <div class="col"><strong>AdminService (5004):</strong> ${getBadge(summary.services.admin)}</div>
+      `;
+
+      document.getElementById("userTable").innerHTML = users.map(u => `
+        <tr>
+          <td>${u.fullName}<br><small>${u.email}</small></td>
+          <td>${u.role}</td>
+          <td>${u.district}</td>
+          <td>${u.active ? getBadge("Running") : getBadge("Offline")}</td>
+          <td><button class="btn-sm btn-blue" onclick="toggleUser(${u.id})">${u.active ? "Disable" : "Enable"}</button></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("logTable").innerHTML = logs.map(l => `
+        <tr>
+          <td>${new Date(l.logTime).toLocaleString()}</td>
+          <td>${l.serviceName}</td>
+          <td>${l.action}</td>
+          <td>${l.details}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function toggleUser(id) {
+      await fetch(`${SERVICES.admin}/users/${id}/toggle`, { method: "PUT" });
+      loadAdmin();
+    }
+
+    document.getElementById("userForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.admin}/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: document.getElementById("uName").value,
+          email: document.getElementById("uEmail").value,
+          role: document.getElementById("uRole").value,
+          district: document.getElementById("uDist").value,
+          active: true
+        })
+      });
+      e.target.reset();
+      alert("User created.");
+      loadAdmin();
+    });
+
+    loadAdmin();
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6f8;
+  color: #222222;
+  margin: 0;
+  padding: 0;
+}
+
+.header-bar {
+  background-color: #245e36;
+  color: #ffffff;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-bar a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 16px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.header-bar a:hover {
+  text-decoration: underline;
+}
+
+.main-container {
+  max-width: 1120px;
+  margin: 22px auto;
+  padding: 0 16px;
+}
+
+.panel-box {
+  background-color: #ffffff;
+  border: 1px solid #d5dce0;
+  border-radius: 5px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 18px;
+  border-bottom: 1px solid #e6eaee;
+  padding-bottom: 8px;
+}
+
+.row-flex {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.col-half {
+  flex: 1;
+  min-width: 450px;
+}
+
+.col-quarter {
+  flex: 1;
+  min-width: 220px;
+}
+
+.form-table td {
+  padding: 6px 8px;
+  border: none;
+}
+
+.txt-input {
+  width: 220px;
+  padding: 6px;
+  border: 1px solid #bfc7ce;
+  border-radius: 3px;
+}
+
+.btn-green {
+  background-color: #245e36;
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-blue {
+  background-color: #1b5a96;
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-red {
+  background-color: #b52b2b;
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.grid-view {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.grid-view th {
+  background-color: #edf1f4;
+  border: 1px solid #d5dce0;
+  padding: 8px;
+  text-align: left;
+}
+
+.grid-view td {
+  border: 1px solid #d5dce0;
+  padding: 8px;
+}
+
+.val-error {
+  color: #cc0000;
+  font-size: 12px;
+}
+
+.status-msg {
+  display: block;
+  padding: 8px 12px;
+  background-color: #e2f0e6;
+  border: 1px solid #b8d8c2;
+  color: #1c4d2b;
+  margin-bottom: 14px;
+  border-radius: 4px;
+  font-weight: bold;
+}

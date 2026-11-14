@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agriculture Officer - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - Agriculture Officer</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a class="active" href="officer.html">Officer</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>Supply Request & Quotation Verification</h2>
+      <table>
+        <thead><tr><th>Req ID</th><th>Farmer</th><th>Item</th><th>Qty</th><th>Supplier Quotes</th><th>Status</th><th>Decision</th></tr></thead>
+        <tbody id="wfTable"></tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="col box">
+        <h2>Publish Agricultural Recommendation</h2>
+        <form id="advForm">
+          <div class="form-row">
+            <div><label>Title</label><input id="aTitle" required /></div>
+            <div><label>District</label><input id="aDistrict" value="All Districts" required /></div>
+            <div><label>Crop Type</label><input id="aCrop" value="Paddy" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Recommendation Details</label><textarea id="aMsg" rows="3" required></textarea></div>
+          </div>
+          <button type="submit">Publish Advisory</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Verification History</h2>
+        <table>
+          <thead><tr><th>Req ID</th><th>Item</th><th>Decision</th><th>Remarks</th></tr></thead>
+          <tbody id="verTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Published Recommendations</h2>
+      <table>
+        <thead><tr><th>Title</th><th>District</th><th>Crop</th><th>Message</th><th>Officer</th></tr></thead>
+        <tbody id="advTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    async function loadOfficer() {
+      const [wf, verifications, advisories] = await Promise.all([
+        fetch(`${SERVICES.officer}/workflows`).then(r => r.json()),
+        fetch(`${SERVICES.officer}/verifications`).then(r => r.json()),
+        fetch(`${SERVICES.officer}/advisories`).then(r => r.json())
+      ]);
+
+      const requests = wf.requests || [];
+      const quotes = wf.quotes || [];
+
+      document.getElementById("wfTable").innerHTML = requests.map(r => {
+        const qList = quotes.filter(q => q.supplyRequestId === r.id);
+        const qText = qList.length ? qList.map(q => `${q.supplierName}: Rs.${q.totalAmount}`).join("<br>") : "None";
+
+        return `
+          <tr>
+            <td>#${r.id}</td>
+            <td>${r.farmerName}</td>
+            <td>${r.itemName}</td>
+            <td>${r.quantity} ${r.unit}</td>
+            <td>${qText}</td>
+            <td>${getBadge(r.status)}</td>
+            <td>
+              <button class="btn-sm" onclick="decide(${r.id}, '${r.farmerName}', '${r.itemName}', 'Approved')">Approve</button>
+              <button class="btn-sm btn-red" onclick="decide(${r.id}, '${r.farmerName}', '${r.itemName}', 'Rejected')">Reject</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("verTable").innerHTML = verifications.map(v => `
+        <tr><td>#${v.supplyRequestId}</td><td>${v.itemName}</td><td>${getBadge(v.decision)}</td><td>${v.remarks}</td></tr>
+      `).join("");
+
+      document.getElementById("advTable").innerHTML = advisories.map(a => `
+        <tr><td>${a.title}</td><td>${a.district}</td><td>${a.cropType}</td><td>${a.message}</td><td>${a.officerName}</td></tr>
+      `).join("");
+    }
+
+    async function decide(supplyRequestId, farmerName, itemName, decision) {
+      const remarks = prompt("Enter verification note:", decision === "Approved" ? "Approved for agricultural use." : "Rejected due to compliance issue.");
+      if (remarks === null) return;
+
+      await fetch(`${SERVICES.officer}/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ supplyRequestId, farmerName, itemName, officerName: "Dr. Chaminda Silva", decision, remarks })
+      });
+      loadOfficer();
+    }
+
+    document.getElementById("advForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.officer}/advisories`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: document.getElementById("aTitle").value,
+          district: document.getElementById("aDistrict").value,
+          cropType: document.getElementById("aCrop").value,
+          message: document.getElementById("aMsg").value,
+          officerName: "Dr. Chaminda Silva"
+        })
+      });
+      e.target.reset();
+      alert("Advisory published.");
+      loadOfficer();
+    });
+
+    loadOfficer();
+  </script>
+</body>
+</html>

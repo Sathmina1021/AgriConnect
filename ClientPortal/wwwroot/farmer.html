@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Farmer Dashboard - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - Farmer Dashboard</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a class="active" href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a href="officer.html">Officer</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col box">
+        <h2>Farmer Registration</h2>
+        <form id="regForm">
+          <div class="form-row">
+            <div><label>Full Name</label><input id="fName" required /></div>
+            <div><label>Farm Name</label><input id="fFarm" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>District</label><input id="fDistrict" required /></div>
+            <div><label>Phone</label><input id="fPhone" required /></div>
+            <div><label>Acres</label><input id="fAcres" type="number" step="0.1" value="2.5" required /></div>
+          </div>
+          <button type="submit">Save Farmer Profile</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Submit Supply Request</h2>
+        <form id="reqForm">
+          <div class="form-row">
+            <div><label>Farmer</label><select id="reqFarmer"></select></div>
+            <div><label>Item Name</label><input id="reqItem" placeholder="e.g. Urea Fertilizer" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Category</label>
+              <select id="reqCat"><option>Fertilizer</option><option>Seeds</option><option>Pesticide</option><option>Tools</option></select>
+            </div>
+            <div><label>Quantity</label><input id="reqQty" type="number" value="10" required /></div>
+            <div><label>Unit</label><input id="reqUnit" value="Bags" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Delivery Location</label><input id="reqLoc" required /></div>
+            <div><label>Preferred Date</label><input id="reqDate" type="date" required /></div>
+          </div>
+          <button type="submit">Submit Request</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>My Supply Requests & Supplier Quotations</h2>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Farmer</th><th>Item</th><th>Qty</th><th>Location</th><th>Status</th><th>Officer Note</th><th>Action</th></tr>
+        </thead>
+        <tbody id="reqTable"></tbody>
+      </table>
+
+      <div id="quoteBox" style="display:none; margin-top:15px; padding:12px; background:#f9f9f9; border:1px solid #ccc;">
+        <strong>Quotations for Request #<span id="qReqId"></span></strong>
+        <table style="margin-top:8px;">
+          <thead><tr><th>Supplier</th><th>Unit Price</th><th>Total</th><th>Delivery Days</th><th>Remarks</th><th>Confirm</th></tr></thead>
+          <tbody id="quoteTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col box">
+        <h2>Publish Crop Listing</h2>
+        <form id="cropForm">
+          <div class="form-row">
+            <div><label>Farmer</label><select id="cropFarmer"></select></div>
+            <div><label>Crop Name</label><input id="cropName" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Quantity (kg)</label><input id="cropQty" type="number" value="500" required /></div>
+            <div><label>Price per kg (Rs)</label><input id="cropPrice" type="number" value="140" required /></div>
+            <div><label>Location</label><input id="cropLoc" required /></div>
+          </div>
+          <button type="submit">Publish Crop</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Crop Marketplace</h2>
+        <table>
+          <thead><tr><th>Crop</th><th>Farmer</th><th>Phone</th><th>Qty (kg)</th><th>Price/kg</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="cropTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("reqDate").valueAsDate = new Date(Date.now() + 3 * 86400000);
+
+    async function loadData() {
+      const [farmers, requests, crops] = await Promise.all([
+        fetch(`${SERVICES.farmer}/profiles`).then(r => r.json()),
+        fetch(`${SERVICES.farmer}/requests`).then(r => r.json()),
+        fetch(`${SERVICES.farmer}/crops`).then(r => r.json())
+      ]);
+
+      const options = farmers.map(f => `<option value="${f.id}">${f.fullName} (${f.district})</option>`).join("");
+      document.getElementById("reqFarmer").innerHTML = options;
+      document.getElementById("cropFarmer").innerHTML = options;
+
+      document.getElementById("reqTable").innerHTML = requests.map(r => `
+        <tr>
+          <td>${r.id}</td>
+          <td>${r.farmerName}</td>
+          <td>${r.itemName}</td>
+          <td>${r.quantity} ${r.unit}</td>
+          <td>${r.deliveryLocation}</td>
+          <td>${getBadge(r.status)}</td>
+          <td>${r.officerNote || "-"}</td>
+          <td><button class="btn-sm btn-blue" onclick="viewQuotes(${r.id}, '${r.status}')">Quotations</button></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("cropTable").innerHTML = crops.map(c => `
+        <tr>
+          <td>${c.cropName}</td>
+          <td>${c.farmerName}</td>
+          <td>${c.contactPhone}</td>
+          <td>${c.quantityKg}</td>
+          <td>Rs. ${c.pricePerKg}</td>
+          <td>${getBadge(c.status)}</td>
+          <td>${c.status === "Available" ? `<button class="btn-sm" onclick="markSold(${c.id})">Mark Sold</button>` : "-"}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function viewQuotes(reqId, status) {
+      const list = await fetch(`${SERVICES.farmer}/requests/${reqId}/quotations`).then(r => r.json());
+      document.getElementById("qReqId").textContent = reqId;
+      document.getElementById("quoteBox").style.display = "block";
+
+      if (!list.length) {
+        document.getElementById("quoteTable").innerHTML = `<tr><td colspan="6">No quotations available yet.</td></tr>`;
+        return;
+      }
+
+      document.getElementById("quoteTable").innerHTML = list.map(q => `
+        <tr>
+          <td>${q.supplierName}</td>
+          <td>Rs. ${q.unitPrice}</td>
+          <td>Rs. ${q.totalAmount}</td>
+          <td>${q.deliveryDays} days</td>
+          <td>${q.remarks}</td>
+          <td>
+            ${status === "Approved"
+              ? `<button class="btn-sm" onclick="confirmOrder(${reqId}, ${q.id}, '${q.supplierName}', ${q.totalAmount})">Confirm</button>`
+              : `<span>${status}</span>`}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    async function confirmOrder(reqId, quotationId, supplierName, totalAmount) {
+      const res = await fetch(`${SERVICES.farmer}/requests/${reqId}/confirm`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quotationId, supplierName, totalAmount })
+      });
+      if (res.ok) {
+        alert("Order confirmed successfully.");
+        document.getElementById("quoteBox").style.display = "none";
+        loadData();
+      }
+    }
+
+    async function markSold(id) {
+      await fetch(`${SERVICES.farmer}/crops/${id}/sold`, { method: "PUT" });
+      loadData();
+    }
+
+    document.getElementById("regForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.farmer}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: document.getElementById("fName").value,
+          farmName: document.getElementById("fFarm").value,
+          district: document.getElementById("fDistrict").value,
+          phone: document.getElementById("fPhone").value,
+          acres: parseFloat(document.getElementById("fAcres").value)
+        })
+      });
+      e.target.reset();
+      alert("Farmer registered.");
+      loadData();
+    });
+
+    document.getElementById("reqForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.farmer}/requests`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          farmerId: parseInt(document.getElementById("reqFarmer").value),
+          itemName: document.getElementById("reqItem").value,
+          category: document.getElementById("reqCat").value,
+          quantity: parseInt(document.getElementById("reqQty").value),
+          unit: document.getElementById("reqUnit").value,
+          deliveryLocation: document.getElementById("reqLoc").value,
+          preferredDate: document.getElementById("reqDate").value
+        })
+      });
+      e.target.reset();
+      alert("Supply request submitted.");
+      loadData();
+    });
+
+    document.getElementById("cropForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await fetch(`${SERVICES.farmer}/crops`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          farmerId: parseInt(document.getElementById("cropFarmer").value),
+          cropName: document.getElementById("cropName").value,
+          quantityKg: parseFloat(document.getElementById("cropQty").value),
+          pricePerKg: parseFloat(document.getElementById("cropPrice").value),
+          location: document.getElementById("cropLoc").value
+        })
+      });
+      e.target.reset();
+      alert("Crop published.");
+      loadData();
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
