@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://agriconnect.lk/farmer/2026/data" elementFormDefault="qualified" targetNamespace="http://agriconnect.lk/farmer/2026/data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="FarmerRegistration">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="District" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FullName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FarmerRegistration" nillable="true" type="tns:FarmerRegistration" />
+  <xs:complexType name="FarmerDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="District" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="FullName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredOn" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FarmerDto" nillable="true" type="tns:FarmerDto" />
+  <xs:complexType name="ServiceFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ValidationErrors" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServiceFault" nillable="true" type="tns:ServiceFault" />
+  <xs:complexType name="LoginCredentials">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoginCredentials" nillable="true" type="tns:LoginCredentials" />
+  <xs:complexType name="LoginResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Profile" nillable="true" type="tns:FarmerDto" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoginResult" nillable="true" type="tns:LoginResult" />
+  <xs:complexType name="DashboardSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActiveCropListings" type="xs:int" />
+      <xs:element minOccurs="0" name="ApprovedReadyToConfirm" type="xs:int" />
+      <xs:element minOccurs="0" name="ConfirmedOrders" type="xs:int" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="FarmerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PendingApprovals" type="xs:int" />
+      <xs:element minOccurs="0" name="RecentListings" nillable="true" type="tns:ArrayOfCropListingDto" />
+      <xs:element minOccurs="0" name="RecentRequests" nillable="true" type="tns:ArrayOfSupplyRequestDto" />
+      <xs:element minOccurs="0" name="RejectedRequests" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalOrderValue" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TotalSupplyRequests" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DashboardSummary" nillable="true" type="tns:DashboardSummary" />
+  <xs:complexType name="ArrayOfCropListingDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CropListingDto" nillable="true" type="tns:CropListingDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCropListingDto" nillable="true" type="tns:ArrayOfCropListingDto" />
+  <xs:complexType name="CropListingDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvailabilityDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ContactInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CropName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="District" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="FarmerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ListingId" type="xs:int" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnitPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="UpdatedOn" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CropListingDto" nillable="true" type="tns:CropListingDto" />
+  <xs:complexType name="ArrayOfSupplyRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SupplyRequestDto" nillable="true" type="tns:SupplyRequestDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSupplyRequestDto" nillable="true" type="tns:ArrayOfSupplyRequestDto" />
+  <xs:complexType name="SupplyRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DeliveryLocation" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OfficerId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="OfficerNotified" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OfficerRemarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PreferredDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="RequestId" type="xs:int" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SupplierNotified" type="xs:boolean" />
+      <xs:element minOccurs="0" name="UpdatedOn" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SupplyRequestDto" nillable="true" type="tns:SupplyRequestDto" />
+  <xs:complexType name="SupplyRequestInput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DeliveryLocation" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PreferredDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SupplyRequestInput" nillable="true" type="tns:SupplyRequestInput" />
+  <xs:complexType name="OfficerDecisionInput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Approved" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IntegrationKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OfficerId" type="xs:int" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RequestId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OfficerDecisionInput" nillable="true" type="tns:OfficerDecisionInput" />
+  <xs:complexType name="ArrayOfQuotationDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="QuotationDto" nillable="true" type="tns:QuotationDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQuotationDto" nillable="true" type="tns:ArrayOfQuotationDto" />
+  <xs:complexType name="QuotationDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DeliveryDays" type="xs:int" />
+      <xs:element minOccurs="0" name="EstimatedDeliveryDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="IsPlaceholder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MeetsPreferredDate" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MeetsStock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="QuotationId" type="xs:int" />
+      <xs:element minOccurs="0" name="RequestId" type="xs:int" />
+      <xs:element minOccurs="0" name="StockQuantity" type="xs:int" />
+      <xs:element minOccurs="0" name="SupplierId" type="xs:int" />
+      <xs:element minOccurs="0" name="SupplierName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TotalPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="UnitPrice" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QuotationDto" nillable="true" type="tns:QuotationDto" />
+  <xs:complexType name="OrderConfirmationInput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="QuotationId" type="xs:int" />
+      <xs:element minOccurs="0" name="RequestId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderConfirmationInput" nillable="true" type="tns:OrderConfirmationInput" />
+  <xs:complexType name="ConfirmedOrderDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ConfirmedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EstimatedDeliveryDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OfficerNotified" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OrderId" type="xs:int" />
+      <xs:element minOccurs="0" name="OrderStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="QuotationId" type="xs:int" />
+      <xs:element minOccurs="0" name="RequestId" type="xs:int" />
+      <xs:element minOccurs="0" name="SupplierId" type="xs:int" />
+      <xs:element minOccurs="0" name="SupplierName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SupplierNotified" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TotalPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="UnitPrice" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfirmedOrderDto" nillable="true" type="tns:ConfirmedOrderDto" />
+  <xs:complexType name="ArrayOfConfirmedOrderDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConfirmedOrderDto" nillable="true" type="tns:ConfirmedOrderDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConfirmedOrderDto" nillable="true" type="tns:ArrayOfConfirmedOrderDto" />
+  <xs:complexType name="CropListingInput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvailabilityDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ContactInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CropName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FarmerId" type="xs:int" />
+      <xs:element minOccurs="0" name="ListingId" type="xs:int" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnitPrice" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CropListingInput" nillable="true" type="tns:CropListingInput" />
+</xs:schema>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://agriconnect.lk/farmer/2026" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="http://agriconnect.lk/farmer/2026" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://agriconnect.lk/farmer/2026/Imports">
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd0" namespace="http://agriconnect.lk/farmer/2026" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd2" namespace="http://agriconnect.lk/farmer/2026/data" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IFarmerService_RegisterFarmer_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterFarmer" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_RegisterFarmer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterFarmerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_RegisterFarmer_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://agriconnect.lk/farmer/2026/data" name="detail" element="q1:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_Login_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://agriconnect.lk/farmer/2026/data" name="detail" element="q2:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetDashboard_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDashboard" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetDashboard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDashboardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetDashboard_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://agriconnect.lk/farmer/2026/data" name="detail" element="q3:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateSupplyRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSupplyRequest" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateSupplyRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSupplyRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateSupplyRequest_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://agriconnect.lk/farmer/2026/data" name="detail" element="q4:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequests_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSupplyRequests" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequests_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSupplyRequestsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequests_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://agriconnect.lk/farmer/2026/data" name="detail" element="q5:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSupplyRequest" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSupplyRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetSupplyRequest_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://agriconnect.lk/farmer/2026/data" name="detail" element="q6:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_RefreshRequestStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:RefreshRequestStatus" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_RefreshRequestStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RefreshRequestStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_RefreshRequestStatus_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://agriconnect.lk/farmer/2026/data" name="detail" element="q7:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CancelSupplyRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelSupplyRequest" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CancelSupplyRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelSupplyRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CancelSupplyRequest_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://agriconnect.lk/farmer/2026/data" name="detail" element="q8:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ApplyOfficerDecision_InputMessage">
+    <wsdl:part name="parameters" element="tns:ApplyOfficerDecision" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ApplyOfficerDecision_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ApplyOfficerDecisionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ApplyOfficerDecision_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://agriconnect.lk/farmer/2026/data" name="detail" element="q9:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetQuotationsForRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetQuotationsForRequest" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetQuotationsForRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetQuotationsForRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetQuotationsForRequest_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://agriconnect.lk/farmer/2026/data" name="detail" element="q10:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ConfirmOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmOrder" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ConfirmOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_ConfirmOrder_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://agriconnect.lk/farmer/2026/data" name="detail" element="q11:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetConfirmedOrders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetConfirmedOrders" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetConfirmedOrders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetConfirmedOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetConfirmedOrders_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://agriconnect.lk/farmer/2026/data" name="detail" element="q12:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateCropListing_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCropListing" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateCropListing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCropListingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CreateCropListing_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://agriconnect.lk/farmer/2026/data" name="detail" element="q13:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_UpdateCropListing_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCropListing" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_UpdateCropListing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCropListingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_UpdateCropListing_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://agriconnect.lk/farmer/2026/data" name="detail" element="q14:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CloseCropListing_InputMessage">
+    <wsdl:part name="parameters" element="tns:CloseCropListing" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CloseCropListing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CloseCropListingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_CloseCropListing_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://agriconnect.lk/farmer/2026/data" name="detail" element="q15:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_DeleteCropListing_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCropListing" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_DeleteCropListing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCropListingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_DeleteCropListing_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://agriconnect.lk/farmer/2026/data" name="detail" element="q16:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMyCropListings_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMyCropListings" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMyCropListings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMyCropListingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMyCropListings_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://agriconnect.lk/farmer/2026/data" name="detail" element="q17:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMarketplaceListings_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMarketplaceListings" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMarketplaceListings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMarketplaceListingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFarmerService_GetMarketplaceListings_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://agriconnect.lk/farmer/2026/data" name="detail" element="q18:ServiceFault" />
+  </wsdl:message>
+  <wsdl:portType name="IFarmerService">
+    <wsdl:operation name="RegisterFarmer">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RegisterFarmer" message="tns:IFarmerService_RegisterFarmer_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RegisterFarmerResponse" message="tns:IFarmerService_RegisterFarmer_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RegisterFarmerServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_RegisterFarmer_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/Login" message="tns:IFarmerService_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/LoginResponse" message="tns:IFarmerService_Login_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/LoginServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_Login_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDashboard">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetDashboard" message="tns:IFarmerService_GetDashboard_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetDashboardResponse" message="tns:IFarmerService_GetDashboard_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetDashboardServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetDashboard_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSupplyRequest">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateSupplyRequest" message="tns:IFarmerService_CreateSupplyRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateSupplyRequestResponse" message="tns:IFarmerService_CreateSupplyRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateSupplyRequestServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_CreateSupplyRequest_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSupplyRequests">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequests" message="tns:IFarmerService_GetSupplyRequests_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequestsResponse" message="tns:IFarmerService_GetSupplyRequests_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequestsServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetSupplyRequests_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSupplyRequest">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequest" message="tns:IFarmerService_GetSupplyRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequestResponse" message="tns:IFarmerService_GetSupplyRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetSupplyRequestServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetSupplyRequest_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RefreshRequestStatus">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RefreshRequestStatus" message="tns:IFarmerService_RefreshRequestStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RefreshRequestStatusResponse" message="tns:IFarmerService_RefreshRequestStatus_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/RefreshRequestStatusServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_RefreshRequestStatus_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelSupplyRequest">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CancelSupplyRequest" message="tns:IFarmerService_CancelSupplyRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CancelSupplyRequestResponse" message="tns:IFarmerService_CancelSupplyRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CancelSupplyRequestServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_CancelSupplyRequest_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ApplyOfficerDecision">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ApplyOfficerDecision" message="tns:IFarmerService_ApplyOfficerDecision_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ApplyOfficerDecisionResponse" message="tns:IFarmerService_ApplyOfficerDecision_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ApplyOfficerDecisionServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_ApplyOfficerDecision_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQuotationsForRequest">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetQuotationsForRequest" message="tns:IFarmerService_GetQuotationsForRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetQuotationsForRequestResponse" message="tns:IFarmerService_GetQuotationsForRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetQuotationsForRequestServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetQuotationsForRequest_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmOrder">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ConfirmOrder" message="tns:IFarmerService_ConfirmOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ConfirmOrderResponse" message="tns:IFarmerService_ConfirmOrder_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/ConfirmOrderServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_ConfirmOrder_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfirmedOrders">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetConfirmedOrders" message="tns:IFarmerService_GetConfirmedOrders_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetConfirmedOrdersResponse" message="tns:IFarmerService_GetConfirmedOrders_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetConfirmedOrdersServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetConfirmedOrders_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCropListing">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateCropListing" message="tns:IFarmerService_CreateCropListing_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateCropListingResponse" message="tns:IFarmerService_CreateCropListing_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CreateCropListingServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_CreateCropListing_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCropListing">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/UpdateCropListing" message="tns:IFarmerService_UpdateCropListing_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/UpdateCropListingResponse" message="tns:IFarmerService_UpdateCropListing_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/UpdateCropListingServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_UpdateCropListing_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CloseCropListing">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CloseCropListing" message="tns:IFarmerService_CloseCropListing_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CloseCropListingResponse" message="tns:IFarmerService_CloseCropListing_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/CloseCropListingServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_CloseCropListing_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCropListing">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/DeleteCropListing" message="tns:IFarmerService_DeleteCropListing_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/DeleteCropListingResponse" message="tns:IFarmerService_DeleteCropListing_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/DeleteCropListingServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_DeleteCropListing_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMyCropListings">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMyCropListings" message="tns:IFarmerService_GetMyCropListings_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMyCropListingsResponse" message="tns:IFarmerService_GetMyCropListings_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMyCropListingsServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetMyCropListings_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMarketplaceListings">
+      <wsdl:input wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMarketplaceListings" message="tns:IFarmerService_GetMarketplaceListings_InputMessage" />
+      <wsdl:output wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMarketplaceListingsResponse" message="tns:IFarmerService_GetMarketplaceListings_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://agriconnect.lk/farmer/2026/IFarmerService/GetMarketplaceListingsServiceFaultFault" name="ServiceFaultFault" message="tns:IFarmerService_GetMarketplaceListings_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

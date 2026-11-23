@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://agriconnect.lk/farmer/2026" elementFormDefault="qualified" targetNamespace="http://agriconnect.lk/farmer/2026" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/AgriConnect/Farmer/?xsd=xsd2" namespace="http://agriconnect.lk/farmer/2026/data" />
+  <xs:element name="RegisterFarmer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="registration" nillable="true" type="q1:FarmerRegistration" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegisterFarmerResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="RegisterFarmerResult" nillable="true" type="q2:FarmerDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Login">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="credentials" nillable="true" type="q3:LoginCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoginResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="LoginResult" nillable="true" type="q4:LoginResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDashboard">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDashboardResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetDashboardResult" nillable="true" type="q5:DashboardSummary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSupplyRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="input" nillable="true" type="q6:SupplyRequestInput" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSupplyRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="CreateSupplyRequestResult" nillable="true" type="q7:SupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSupplyRequests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="statusFilter" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSupplyRequestsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetSupplyRequestsResult" nillable="true" type="q8:ArrayOfSupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSupplyRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="requestId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSupplyRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetSupplyRequestResult" nillable="true" type="q9:SupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RefreshRequestStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="requestId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RefreshRequestStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="RefreshRequestStatusResult" nillable="true" type="q10:SupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelSupplyRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="requestId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelSupplyRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="CancelSupplyRequestResult" nillable="true" type="q11:SupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ApplyOfficerDecision">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="decision" nillable="true" type="q12:OfficerDecisionInput" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ApplyOfficerDecisionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="ApplyOfficerDecisionResult" nillable="true" type="q13:SupplyRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQuotationsForRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="requestId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQuotationsForRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetQuotationsForRequestResult" nillable="true" type="q14:ArrayOfQuotationDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfirmOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="input" nillable="true" type="q15:OrderConfirmationInput" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ConfirmOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="ConfirmOrderResult" nillable="true" type="q16:ConfirmedOrderDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetConfirmedOrders">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetConfirmedOrdersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetConfirmedOrdersResult" nillable="true" type="q17:ArrayOfConfirmedOrderDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateCropListing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="input" nillable="true" type="q18:CropListingInput" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateCropListingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="CreateCropListingResult" nillable="true" type="q19:CropListingDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCropListing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="input" nillable="true" type="q20:CropListingInput" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCropListingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="UpdateCropListingResult" nillable="true" type="q21:CropListingDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CloseCropListing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="listingId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CloseCropListingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="CloseCropListingResult" nillable="true" type="q22:CropListingDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteCropListing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+        <xs:element minOccurs="0" name="listingId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteCropListingResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMyCropListings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="farmerId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMyCropListingsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetMyCropListingsResult" nillable="true" type="q23:ArrayOfCropListingDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMarketplaceListings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchText" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMarketplaceListingsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://agriconnect.lk/farmer/2026/data" minOccurs="0" name="GetMarketplaceListingsResult" nillable="true" type="q24:ArrayOfCropListingDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
