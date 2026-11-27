@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>API Explorer - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .method { display:inline-block; padding:2px 7px; border-radius:4px; font-weight:bold; font-size:12px; color:#fff; }
+    .m-GET { background:#2e6f40; }
+    .m-POST { background:#1f5c99; }
+    .m-PUT { background:#b36b00; }
+    .m-DELETE { background:#b53030; }
+    pre.api-out { background:#1e1e1e; color:#d4f7d4; padding:12px; border-radius:6px; overflow:auto; max-height:320px; font-size:12.5px; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - REST API Explorer</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a href="officer.html">Officer</a>
+      <a href="admin.html">Admin</a>
+      <a class="active" href="api-docs.html">API Explorer</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>Live REST API Endpoints</h2>
+      <p>All 4 SOC services expose connected JSON REST endpoints on <code>http://localhost:5000</code>. Log in as Admin (or the matching role) to test protected <code>GET</code> endpoints live below.</p>
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Method</th><th>Endpoint Path</th><th>Allowed Roles</th><th>Description</th><th>Test</th></tr>
+        </thead>
+        <tbody id="epTable"></tbody>
+      </table>
+    </div>
+
+    <div class="box" id="responseBox" style="display:none;">
+      <h2>Response: <code id="respUrl"></code></h2>
+      <pre class="api-out" id="respOut"></pre>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    async function testEndpoint(path) {
+      const box = document.getElementById("responseBox");
+      const out = document.getElementById("respOut");
+      document.getElementById("respUrl").textContent = `GET ${path}`;
+      box.style.display = "block";
+      out.textContent = "Loading...";
+      try {
+        const res = await fetch(path);
+        const text = await res.text();
+        try {
+          out.textContent = `HTTP ${res.status}\n\n` + JSON.stringify(JSON.parse(text), null, 2);
+        } catch {
+          out.textContent = `HTTP ${res.status}\n\n` + text;
+        }
+      } catch (e) {
+        out.textContent = "Error: " + e.message;
+      }
+      box.scrollIntoView({ behavior: "smooth" });
+    }
+
+    (async () => {
+      try {
+        const me = await fetch(`${SERVICES.auth}/me`);
+        if (me.ok) renderUserBadge(await me.json());
+      } catch {}
+
+      const list = await apiFetch(SERVICES.endpoints);
+      document.getElementById("epTable").innerHTML = list.map(ep => {
+        const testable = ep.method === "GET" && !ep.path.includes("{");
+        return `
+          <tr>
+            <td><strong>${escHtml(ep.group)}</strong></td>
+            <td><span class="method m-${escHtml(ep.method)}">${escHtml(ep.method)}</span></td>
+            <td><code>${escHtml(ep.path)}</code></td>
+            <td>${escHtml(ep.role)}</td>
+            <td>${escHtml(ep.description)}</td>
+            <td>${testable ? `<button class="btn-sm btn-blue" onclick="testEndpoint('${escJs(ep.path)}')">Test GET</button>` : "-"}</td>
+          </tr>
+        `;
+      }).join("");
+    })();
+  </script>
+</body>
+</html>

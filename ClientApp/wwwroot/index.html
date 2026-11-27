@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriConnect - Role Selection</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect System</strong></div>
+    <div>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a href="officer.html">Agriculture Officer</a>
+      <a href="admin.html">Admin</a>
+      <a href="api-docs.html">API Explorer</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>AgriConnect Service-Oriented Platform</h2>
+      <p>Select a user role below to access its portal. Each role runs as an independent .NET microservice with its own database under <code>Services/*/Data/</code>, routed through this ClientApp gateway.</p>
+      <div id="healthBanner" style="margin-top:10px; font-size:13px; color:#444;">Checking live microservices...</div>
+    </div>
+
+    <div class="role-grid">
+      <div class="box">
+        <h3>1. Farmer Portal</h3>
+        <p>Register farmer profiles, submit supply requests, compare supplier quotations, confirm orders, track deliveries, read officer advisories, and post harvested crops.</p>
+        <p><small>Service: <code>localhost:5001</code> &bull; DB: <code>farmer_db.json</code></small><br><span id="stFarmer"></span></p>
+        <a href="farmer.html"><button>Open Farmer UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>2. Supplier Portal</h3>
+        <p>Manage warehouse stock, view open farmer supply requests, submit price quotations, update delivery statuses, and browse available crops.</p>
+        <p><small>Service: <code>localhost:5002</code> &bull; DB: <code>supplier_db.json</code></small><br><span id="stSupplier"></span></p>
+        <a href="supplier.html"><button class="btn-blue">Open Supplier UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>3. Agriculture Officer</h3>
+        <p>Verify supply requests and supplier quotations, approve or reject orders with compliance notes, and publish farming advisories for farmers.</p>
+        <p><small>Service: <code>localhost:5003</code> &bull; DB: <code>officer_db.json</code></small><br><span id="stOfficer"></span></p>
+        <a href="officer.html"><button>Open Officer UI</button></a>
+      </div>
+
+      <div class="box">
+        <h3>4. Administration</h3>
+        <p>Manage platform user accounts, monitor live service health across all 4 microservices, and inspect system-wide audit logs.</p>
+        <p><small>Service: <code>localhost:5004</code> &bull; DB: <code>admin_db.json</code></small><br><span id="stAdmin"></span></p>
+        <a href="admin.html"><button class="btn-blue">Open Admin UI</button></a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    (async () => {
+      try {
+        const health = await apiFetch(SERVICES.health);
+        document.getElementById("healthBanner").innerHTML =
+          `${getBadge(health.status)} &nbsp; <strong>Storage:</strong> ${escHtml(health.persistence)} &nbsp;|&nbsp; <a href="api-docs.html">View All REST API Endpoints</a>`;
+        const f = health.services.farmer || {};
+        const s = health.services.supplier || {};
+        const o = health.services.officer || {};
+        const a = health.services.admin || {};
+        document.getElementById("stFarmer").innerHTML = f.status === "Running"
+          ? `${getBadge(f.status)} (${f.requests} requests, ${f.crops} crops)`
+          : `${getBadge("Offline")} Start FarmerService (:5001)`;
+        document.getElementById("stSupplier").innerHTML = s.status === "Running"
+          ? `${getBadge(s.status)} (${s.inventory} stock, ${s.quotations} quotes)`
+          : `${getBadge("Offline")} Start SupplierService (:5002)`;
+        document.getElementById("stOfficer").innerHTML = o.status === "Running"
+          ? `${getBadge(o.status)} (${o.verifications} verified, ${o.advisories} advisories)`
+          : `${getBadge("Offline")} Start OfficerService (:5003)`;
+        document.getElementById("stAdmin").innerHTML = a.status === "Running"
+          ? `${getBadge(a.status)} (${a.users} users, ${a.auditLogs} logs)`
+          : `${getBadge("Offline")} Start AdminService (:5004)`;
+      } catch (e) {
+        document.getElementById("healthBanner").innerHTML = `${getBadge("Offline")} Gateway is not reachable. Run <code>start-all.bat</code>.`;
+      }
+
+      try {
+        const res = await fetch(`${SERVICES.auth}/me`);
+        if (!res.ok) return;
+        const user = await res.json();
+        const link = document.getElementById("loginLink");
+        link.textContent = `Go to ${user.role} Dashboard`;
+        link.href = roleHome(user.role);
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

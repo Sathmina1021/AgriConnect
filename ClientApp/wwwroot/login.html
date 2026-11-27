@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .login-wrap { max-width: 440px; margin: 48px auto; padding: 0 16px; }
+    .login-box { background: #fff; border: 1px solid #dcdcdc; border-radius: 8px; padding: 26px; box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+    .login-box h2 { text-align: center; border: none; margin-bottom: 14px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tabs button { flex: 1; background: #e9ecef; color: #333; font-weight: bold; }
+    .tabs button.active { background: #2e6f40; color: #fff; }
+    .login-error { background: #f8d7da; color: #721c24; padding: 8px 10px; border-radius: 4px; font-size: 13px; margin-bottom: 12px; display: none; }
+    .demo-accounts { margin-top: 18px; font-size: 12.5px; color: #555; background: #f5f6f8; border-radius: 6px; padding: 10px 12px; }
+    .demo-accounts strong { display: block; margin-bottom: 4px; }
+    .demo-accounts table { font-size: 12.5px; }
+    .demo-accounts td { border: none; padding: 2px 6px; }
+    .login-submit { width: 100%; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect System</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="api-docs.html">API Explorer</a>
+    </div>
+  </div>
+
+  <div class="login-wrap">
+    <div class="login-box">
+      <h2>AgriConnect Portal</h2>
+      <div class="tabs">
+        <button type="button" id="tabLogin" class="active" onclick="showTab('login')">Sign In</button>
+        <button type="button" id="tabReg" onclick="showTab('register')">Register Account</button>
+      </div>
+      <div class="login-error" id="loginError"></div>
+
+      <form id="loginForm">
+        <div>
+          <label>Username</label>
+          <input id="lUsername" required autofocus />
+        </div>
+        <div style="margin-top:10px;">
+          <label>Password</label>
+          <input id="lPassword" type="password" required />
+        </div>
+        <button type="submit" class="btn-blue login-submit">Login</button>
+      </form>
+
+      <form id="registerForm" style="display:none;">
+        <div>
+          <label>Full Name</label>
+          <input id="rFullName" placeholder="e.g. Ruwan Jayasinghe" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label>Username</label>
+          <input id="rUsername" placeholder="e.g. ruwan1" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label>Password</label>
+          <input id="rPassword" type="password" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label>Email</label>
+          <input id="rEmail" type="email" placeholder="ruwan@agriconnect.lk" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label>Role</label>
+          <select id="rRole">
+            <option value="Farmer">Farmer</option>
+            <option value="Supplier">Supplier</option>
+            <option value="Officer">Agriculture Officer</option>
+          </select>
+        </div>
+        <div style="margin-top:8px;">
+          <label>District</label>
+          <input id="rDistrict" value="Colombo" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label>Phone</label>
+          <input id="rPhone" value="0771122334" />
+        </div>
+        <button type="submit" class="login-submit">Create Account &amp; Sign In</button>
+      </form>
+
+      <div class="demo-accounts">
+        <strong>Demo accounts (for viva / testing):</strong>
+        <table>
+          <tr><td><strong>Admin</strong></td><td>admin / admin123</td></tr>
+          <tr><td><strong>Farmer</strong></td><td>farmer1 / farmer123</td></tr>
+          <tr><td><strong>Supplier</strong></td><td>supplier1 / supplier123</td></tr>
+          <tr><td><strong>Officer</strong></td><td>officer1 / officer123</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function showTab(tab) {
+      document.getElementById("loginError").style.display = "none";
+      const isLogin = tab === "login";
+      document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
+      document.getElementById("registerForm").style.display = isLogin ? "none" : "block";
+      document.getElementById("tabLogin").classList.toggle("active", isLogin);
+      document.getElementById("tabReg").classList.toggle("active", !isLogin);
+    }
+
+    function getRedirectTarget(role) {
+      const params = new URLSearchParams(location.search);
+      const redirect = params.get("redirect");
+      const allowed = ["farmer.html", "supplier.html", "officer.html", "admin.html", "index.html", "api-docs.html"];
+      if (redirect && allowed.includes(redirect)) return redirect;
+      return roleHome(role);
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById("loginError");
+      errBox.style.display = "none";
+      try {
+        const data = await apiFetch(`${SERVICES.auth}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: document.getElementById("lUsername").value.trim(),
+            password: document.getElementById("lPassword").value
+          })
+        });
+        location.href = getRedirectTarget(data.role);
+      } catch (err) {
+        errBox.textContent = err.message;
+        errBox.style.display = "block";
+      }
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById("loginError");
+      errBox.style.display = "none";
+      try {
+        const data = await apiFetch(`${SERVICES.auth}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName: document.getElementById("rFullName").value.trim(),
+            username: document.getElementById("rUsername").value.trim(),
+            password: document.getElementById("rPassword").value,
+            email: document.getElementById("rEmail").value.trim(),
+            role: document.getElementById("rRole").value,
+            district: document.getElementById("rDistrict").value.trim(),
+            phone: document.getElementById("rPhone").value.trim()
+          })
+        });
+        location.href = roleHome(data.role);
+      } catch (err) {
+        errBox.textContent = err.message;
+        errBox.style.display = "block";
+      }
+    });
+
+    (async () => {
+      try {
+        const res = await fetch(`${SERVICES.auth}/me`);
+        if (res.ok) {
+          const user = await res.json();
+          location.href = getRedirectTarget(user.role);
+        }
+      } catch (e) { /* stay on login */ }
+    })();
+  </script>
+</body>
+</html>

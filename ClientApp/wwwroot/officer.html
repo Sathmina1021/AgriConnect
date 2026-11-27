@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agriculture Officer - AgriConnect</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div><strong>AgriConnect - Agriculture Officer</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="farmer.html">Farmer</a>
+      <a href="supplier.html">Supplier</a>
+      <a class="active" href="officer.html">Officer</a>
+      <a href="admin.html">Admin</a>
+      <a href="api-docs.html">API</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h2>Supply Request &amp; Quotation Verification</h2>
+      <table>
+        <thead><tr><th>Req ID</th><th>Farmer</th><th>Item</th><th>Qty</th><th>Supplier Quotes</th><th>Status</th><th>Decision</th></tr></thead>
+        <tbody id="wfTable"></tbody>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="col box">
+        <h2>Publish Agricultural Recommendation</h2>
+        <form id="advForm">
+          <div class="form-row">
+            <div><label>Title</label><input id="aTitle" required /></div>
+            <div><label>District</label><input id="aDistrict" value="All Districts" required /></div>
+            <div><label>Crop Type</label><input id="aCrop" value="Paddy" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Recommendation Details</label><textarea id="aMsg" rows="3" required></textarea></div>
+          </div>
+          <button type="submit">Publish Advisory</button>
+        </form>
+      </div>
+
+      <div class="col box">
+        <h2>Verification History</h2>
+        <table>
+          <thead><tr><th>Req ID</th><th>Item</th><th>Officer</th><th>Decision</th><th>Remarks</th></tr></thead>
+          <tbody id="verTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Published Recommendations</h2>
+      <table>
+        <thead><tr><th>Title</th><th>District</th><th>Crop</th><th>Message</th><th>Officer</th><th>Action</th></tr></thead>
+        <tbody id="advTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    let currentUser = null;
+
+    async function loadOfficer() {
+      const [wf, verifications, advisories] = await Promise.all([
+        apiFetch(`${SERVICES.officer}/workflows`),
+        apiFetch(`${SERVICES.officer}/verifications`),
+        apiFetch(`${SERVICES.officer}/advisories`)
+      ]);
+
+      const requests = wf.requests || [];
+      const quotes = wf.quotes || [];
+
+      document.getElementById("wfTable").innerHTML = requests.length ? requests.map(r => {
+        const qList = quotes.filter(q => q.supplyRequestId === r.id);
+        const qText = qList.length ? qList.map(q => `${escHtml(q.supplierName)}: Rs.${q.totalAmount}`).join("<br>") : "None";
+
+        return `
+          <tr>
+            <td>#${r.id}</td>
+            <td>${escHtml(r.farmerName)}</td>
+            <td>${escHtml(r.itemName)}</td>
+            <td>${r.quantity} ${escHtml(r.unit)}</td>
+            <td>${qText}</td>
+            <td>${getBadge(r.status)}</td>
+            <td>
+              ${r.status !== "Confirmed" ? `
+                <button class="btn-sm" onclick="decide(${r.id}, '${escJs(r.farmerName)}', '${escJs(r.itemName)}', 'Approved')">Approve</button>
+                <button class="btn-sm btn-red" onclick="decide(${r.id}, '${escJs(r.farmerName)}', '${escJs(r.itemName)}', 'Rejected')">Reject</button>
+              ` : "<em>Confirmed</em>"}
+            </td>
+          </tr>
+        `;
+      }).join("") : `<tr><td colspan="7">No supply requests found.</td></tr>`;
+
+      document.getElementById("verTable").innerHTML = verifications.length ? verifications.map(v => `
+        <tr><td>#${v.supplyRequestId}</td><td>${escHtml(v.itemName)}</td><td>${escHtml(v.officerName)}</td><td>${getBadge(v.decision)}</td><td>${escHtml(v.remarks)}</td></tr>
+      `).join("") : `<tr><td colspan="5">No verification records yet.</td></tr>`;
+
+      document.getElementById("advTable").innerHTML = advisories.length ? advisories.map(a => `
+        <tr>
+          <td>${escHtml(a.title)}</td>
+          <td>${escHtml(a.district)}</td>
+          <td>${escHtml(a.cropType)}</td>
+          <td>${escHtml(a.message)}</td>
+          <td>${escHtml(a.officerName)}</td>
+          <td><button class="btn-sm btn-red" onclick="deleteAdvisory(${a.id})">Delete</button></td>
+        </tr>
+      `).join("") : `<tr><td colspan="6">No recommendations published yet.</td></tr>`;
+    }
+
+    async function decide(supplyRequestId, farmerName, itemName, decision) {
+      const remarks = prompt("Enter verification note:", decision === "Approved" ? "Approved for agricultural use." : "Rejected due to compliance issue.");
+      if (remarks === null) return;
+
+      await apiFetch(`${SERVICES.officer}/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          supplyRequestId,
+          farmerName,
+          itemName,
+          officerName: currentUser ? currentUser.fullName : "Agriculture Officer",
+          decision,
+          remarks
+        })
+      });
+      loadOfficer();
+    }
+
+    async function deleteAdvisory(id) {
+      if (!confirm("Delete this advisory?")) return;
+      await apiFetch(`${SERVICES.officer}/advisories/${id}`, { method: "DELETE" });
+      loadOfficer();
+    }
+
+    document.getElementById("advForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await apiFetch(`${SERVICES.officer}/advisories`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: document.getElementById("aTitle").value,
+          district: document.getElementById("aDistrict").value,
+          cropType: document.getElementById("aCrop").value,
+          message: document.getElementById("aMsg").value,
+          officerName: currentUser ? currentUser.fullName : "Agriculture Officer"
+        })
+      });
+      e.target.reset();
+      alert("Advisory published to Farmer Dashboard.");
+      loadOfficer();
+    });
+
+    (async () => {
+      currentUser = await requireRole("Officer");
+      if (currentUser) loadOfficer();
+    })();
+  </script>
+</body>
+</html>
